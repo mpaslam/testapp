@@ -1,49 +1,83 @@
+// To parse this JSON data, do
+//
+//     final loginModel = loginModelFromJson(jsonString);
+
+import 'package:meta/meta.dart';
+import 'dart:convert';
+
+LoginModel loginModelFromJson(String str) =>
+    LoginModel.fromJson(json.decode(str));
+
+String loginModelToJson(LoginModel data) => json.encode(data.toJson());
+
 class LoginModel {
-  // Token token;
-  // UserData userData;
-  // String msg;
+  final Token token;
+  final UserData userData;
+  final String msg;
 
-  // LoginModel({
-  //     required this.token,
-  //     required this.userData,
-  //     required this.msg,
-  // });
+  LoginModel({
+    required this.token,
+    required this.userData,
+    required this.msg,
+  });
 
-  String? token;
-  LoginModel({this.token});
+  factory LoginModel.fromJson(Map<String, dynamic> json) => LoginModel(
+        token: Token.fromJson(json["token"]),
+        userData: UserData.fromJson(json["user_data"]),
+        msg: json["msg"],
+      );
 
-  LoginModel.fromJson(Map<String, dynamic> json) {
-    token = json['token'];
-  }
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['token'] = this.token;
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+        "token": token.toJson(),
+        "user_data": userData.toJson(),
+        "msg": msg,
+      };
 }
 
-// class Token {
-//     String refresh;
-//     String access;
+class Token {
+  final String refresh;
+  final String access;
 
-//     Token({
-//         required this.refresh,
-//         required this.access,
-//     });
+  Token({
+    required this.refresh,
+    required this.access,
+  });
 
-// }
+  factory Token.fromJson(Map<String, dynamic> json) => Token(
+        refresh: json["refresh"],
+        access: json["access"],
+      );
 
-// class UserData {
-//     int id;
-//     String username;
-//     String email;
-//     bool waiter;
+  Map<String, dynamic> toJson() => {
+        "refresh": refresh,
+        "access": access,
+      };
+}
 
-//     UserData({
-//         required this.id,
-//         required this.username,
-//         required this.email,
-//         required this.waiter,
-//     });
+class UserData {
+  final int id;
+  final String username;
+  final String email;
+  final bool waiter;
 
-// }
+  UserData({
+    required this.id,
+    required this.username,
+    required this.email,
+    required this.waiter,
+  });
+
+  factory UserData.fromJson(Map<String, dynamic> json) => UserData(
+        id: json["id"],
+        username: json["username"],
+        email: json["email"],
+        waiter: json["waiter"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "username": username,
+        "email": email,
+        "waiter": waiter,
+      };
+}
