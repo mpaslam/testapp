@@ -49,30 +49,58 @@ class LoginScreen extends StatelessWidget {
             BlocProvider(
               create: (BuildContext context) => UserLoginCubit(),
               child: BlocConsumer<UserLoginCubit, UserLoginState>(
-                  listener: (context, state) {
-                // TODO: implement listener
-                print(state);
-              }, builder: (context, state) {
-                return ElevatedButton(
-                  onPressed: () {
-                    // ApiService()
-                    //     .userlogIn()
-                    //     .then((value) {})
-                    //     .onError((error, stackTrace) {});
-                    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                      context.read<UserLoginCubit>().userLogin(
-                          _emailController.text.toString(),
-                          _passwordController.text.toString());
-                    });
-                  },
-                  child: state is UserLoginLoading
-                      ? CircularProgressIndicator()
-                      : Text('Login'),
-                );
-              }),
+                listener: (context, state) {
+                  if (state is UserLoginLoaded) {
+                    // Navigate to success page
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SuccessPage(),
+                      ),
+                    );
+                  } else if (state is UserLoginError) {
+                    // Show error message using ScaffoldMessenger
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Login failed. Please try again.'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                },
+                builder: (context, state) {
+                  return ElevatedButton(
+                    onPressed: () {
+                      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                        context.read<UserLoginCubit>().userLogin(
+                              _emailController.text.toString(),
+                              _passwordController.text.toString(),
+                            );
+                      });
+                    },
+                    child: state is UserLoginLoading
+                        ? CircularProgressIndicator()
+                        : Text('Login'),
+                  );
+                },
+              ),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class SuccessPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Success'),
+      ),
+      body: Center(
+        child: Text('Login Successful!'),
       ),
     );
   }

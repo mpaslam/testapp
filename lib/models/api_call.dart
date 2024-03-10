@@ -26,7 +26,7 @@ class ApiService {
 
     try {
       final Response response = await dio.post(
-        '$baseUrl', // Corrected URL endpoint (adjust accordingly)
+        '$baseUrl', 
         options: Options(headers: {'Content-Type': 'application/json'}),
         data: jsonEncode(data),
       );

@@ -37,4 +37,3 @@ class UserLoginLoaded extends UserLoginState {
 }
 
 class UserLoginError extends UserLoginState {}
-
