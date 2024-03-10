@@ -1,20 +1,58 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:app/models/model.dart';
-
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 
 class ApiService {
-  String baseUrl = "https://respos.menuclub.uk";
+  ApiService() {
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (HttpClient client) {
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+      return client;
+    };
+  }
+
+  String baseUrl = "https://respos.menuclub.uk/api/loginApp/";
+  final Dio dio = Dio();
 
   Future<LoginModel?> userlogIn(String email, String password) async {
-    var response = await http.post(Uri.parse("$baseUrl/api/loginApp"),
-        body: {"email": email, "password": password});
+    final Map<String, String> data = {
+      'email': email,
+      'password': password,
+    };
 
-    if (response.statusCode == 201) {
-      LoginModel loginModel = LoginModel.fromJson(jsonDecode(response.body));
-      return loginModel;
+    try {
+      final Response response = await dio.post(
+        '$baseUrl', // Corrected URL endpoint (adjust accordingly)
+        options: Options(headers: {'Content-Type': 'application/json'}),
+        data: jsonEncode(data),
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic>? responseData = response.data;
+
+        if (responseData != null) {
+          print('Login Success');
+          print('Access Token: ${responseData['token']['access']}');
+          print('Refresh Token: ${responseData['token']['refresh']}');
+
+          LoginModel loginModel = LoginModel.fromJson(responseData);
+          print('user name=====${loginModel.userData.username}');
+          return loginModel;
+        } else {
+          print('Error: Response data is null');
+        }
+      } else {
+        print('Error: ${response.statusCode}');
+      }
+
+      return null;
+    } catch (e) {
+      print('Error: $e');
+      return null;
     }
-    return null;
   }
 }
