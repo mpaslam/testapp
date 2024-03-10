@@ -1,14 +1,21 @@
-// auth_state.dart
+// // auth_state.dart
 
-import 'package:equatable/equatable.dart';
+// import 'package:app/models/model.dart';
+// import 'package:equatable/equatable.dart';
 
-class AuthState extends Equatable {
-  @override
-  List<Object?> get props => [];
-}
+// class AuthState extends Equatable {
+//   @override
+//   List<Object?> get props => [];
+// }
 
-class AuthInitialState extends AuthState {}
+// class AuthInitial extends AuthState {}
 
-class AuthLoadingState extends AuthState {}
+// class AuthLoading extends AuthState {}
 
-class AuthErrorState extends AuthState {}
+// class AuthError extends AuthState {}
+
+// class AuthSucsess extends AuthState {
+//   final List<Model> sucsess;
+
+//   AuthSucsess({required this.sucsess});
+// }

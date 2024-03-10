@@ -1,22 +1,24 @@
-// login.dart
+import 'package:app/cubit/cubit/user_login_cubit.dart';
 
-import 'package:app/logic/bloc/auth_event.dart';
-import 'package:app/models/api_call.dart';
 import 'package:flutter/material.dart';
-import 'package:app/logic/bloc/auth_bloc.dart';
-//import 'package:app/api/api_call.dart'; // Import the necessary file
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginScreen extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final HomePageRepository homePageRepo = HomepageRepo(); // Instantiate the repository
+  LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Login"),
-        backgroundColor: Colors.red[900],
+        backgroundColor: Colors.purple,
+        centerTitle: true,
+        title: const Text(
+          "Login",
+          style: TextStyle(
+              color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 100, left: 30, right: 30),
@@ -41,32 +43,33 @@ class LoginPage extends StatelessWidget {
               ),
               obscureText: true,
             ),
-            ElevatedButton(
-              onPressed: () {
-                // Trigger login event
-                AuthBloc(homePageRepo).add(LoginEvent(
-                  _emailController.text,
-                  _passwordController.text,
-                ));
-              },
-              child: Text('Login'),
+            SizedBox(
+              height: 20,
             ),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text(
-                'Sign in with Google',
-                style: TextStyle(color: Colors.black),
-              ),
-              style: ElevatedButton.styleFrom(
-                primary: Colors.white,
-              ),
-            ),
-            TextButton(
-              onPressed: () {},
-              child: Text(
-                'Forgot Password',
-                style: TextStyle(color: Colors.black),
-              ),
+            BlocProvider(
+              create: (BuildContext context) => UserLoginCubit(),
+              child: BlocConsumer<UserLoginCubit, UserLoginState>(
+                  listener: (context, state) {
+                // TODO: implement listener
+                print(state);
+              }, builder: (context, state) {
+                return ElevatedButton(
+                  onPressed: () {
+                    // ApiService()
+                    //     .userlogIn()
+                    //     .then((value) {})
+                    //     .onError((error, stackTrace) {});
+                    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                      context.read<UserLoginCubit>().userLogin(
+                          _emailController.text.toString(),
+                          _passwordController.text.toString());
+                    });
+                  },
+                  child: state is UserLoginLoading
+                      ? CircularProgressIndicator()
+                      : Text('Login'),
+                );
+              }),
             ),
           ],
         ),
