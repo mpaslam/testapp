@@ -5,7 +5,7 @@ import 'package:app/models/model.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 
-class ApiService {
+class ApiService { 
   ApiService() {
     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
         (HttpClient client) {

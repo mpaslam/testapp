@@ -1,5 +1,6 @@
 import 'package:app/logic/bloc/auth_bloc.dart';
 import 'package:app/logic/bloc/auth_state.dart';
+import 'package:app/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,7 +13,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.purpleAccent,
+        backgroundColor: Colors.purple,
         centerTitle: true,
         title: const Text(
           "Login",
@@ -51,7 +52,7 @@ class LoginScreen extends StatelessWidget {
               child: BlocConsumer<UserLoginCubit, UserLoginState>(
                 listener: (context, state) {
                   if (state is UserLoginLoaded) {
-                    // Navigate to success page
+                  
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
@@ -59,7 +60,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                     );
                   } else if (state is UserLoginError) {
-                    // Show error message using ScaffoldMessenger
+                  
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text('Login failed. Please try again.'),
@@ -87,20 +88,6 @@ class LoginScreen extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class SuccessPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Success'),
-      ),
-      body: Center(
-        child: Text('Login Successful!'),
       ),
     );
   }
