@@ -49,8 +49,8 @@ class LoginScreen extends StatelessWidget {
               height: 20,
             ),
             BlocProvider(
-              create: (BuildContext context) => UserLoginCubit(),
-              child: BlocConsumer<UserLoginCubit, UserLoginState>(
+              create: (BuildContext context) => UserLoginBloc(),
+              child: BlocConsumer<UserLoginBloc, UserLoginState>(
                 listener: (context, state) {
                   if (state is UserLoginLoaded) {
                   
@@ -74,7 +74,7 @@ class LoginScreen extends StatelessWidget {
                   return ElevatedButton(
                     onPressed: () {
                       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                        context.read<UserLoginCubit>().userLogin(
+                        context.read<UserLoginBloc>().userLogin(
                               _emailController.text.toString(),
                               _passwordController.text.toString(),
                             );

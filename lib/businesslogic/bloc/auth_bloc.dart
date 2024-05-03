@@ -4,8 +4,8 @@ import 'package:testapp/businesslogic/bloc/auth_event.dart';
 import 'package:testapp/businesslogic/bloc/auth_state.dart';
 import 'package:testapp/service/api_call.dart';
 
-class UserLoginCubit extends Cubit<UserLoginState> {
-  UserLoginCubit() : super(UserLoginInitial());
+class UserLoginBloc extends Bloc<UserLoginEvent,UserLoginState> {
+  UserLoginBloc() : super(UserLoginInitial());
 
   void userLogin(String email, String password) {
     emit(UserLoginLoading());

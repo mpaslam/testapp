@@ -5,7 +5,7 @@ import 'package:dio/io.dart';
 import 'package:testapp/service/model.dart';
 
 class ApiService {
-  ApiService() {
+  ApiService() {http://178.18.254.224:5953
     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
         (HttpClient client) {
       client.badCertificateCallback =
@@ -14,7 +14,7 @@ class ApiService {
     };
   }
 
-  String baseUrl = "https://respos.menuclub.uk/api/loginApp/";
+  String baseUrl = "/api/loginApp/";
   final Dio dio = Dio();
 
   Future<LoginModel?> userlogIn(String email, String password) async {
@@ -39,7 +39,7 @@ class ApiService {
           print('Refresh Token: ${responseData['token']['refresh']}');
 
           LoginModel loginModel = LoginModel.fromJson(responseData);
-          print('user name=====${loginModel.userData.username}');
+          print('user name=====${loginModel.userData.id}');
           return loginModel;
         } else {
           print('Error: Response data is null');
